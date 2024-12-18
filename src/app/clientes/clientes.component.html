@@ -1,0 +1,26 @@
+
+<h3>{{ titulo }}</h3>
+
+<table class="table table-hover table-striped">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Email</th>
+    <th>Fecha</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let cliente of clientes">
+    <td>{{ cliente.id }}</td>
+    <td>{{ cliente.nombre }}</td>
+    <td>{{ cliente.apellido }}</td>
+    <td>{{ cliente.email }}</td>
+    <td>{{ cliente.createAt }}</td>
+  </tr>
+  </tbody>
+
+</table>
+
