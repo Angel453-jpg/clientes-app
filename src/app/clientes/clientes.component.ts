@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Cliente} from '../models/cliente';
 import {NgForOf} from '@angular/common';
+import {ClienteService} from '../services/cliente.service';
 
 @Component({
   selector: 'app-clientes',
@@ -10,33 +11,16 @@ import {NgForOf} from '@angular/common';
   ],
   templateUrl: './clientes.component.html'
 })
-export class ClientesComponent {
+export class ClientesComponent implements OnInit {
 
-  clientes: Cliente[] = [
-    {
-      id: 1,
-      nombre: 'Angel',
-      apellido: 'Meneses',
-      email: 'angelin09ozoz@gmail.com',
-      createAt: '2024-12-18'
-    },
-    {
-      id: 2,
-      nombre: 'Rafael',
-      apellido: 'Adrian',
-      email: 'rafael@gmail.com',
-      createAt: '2024-12-18'
-    },
-    {
-      id: 3,
-      nombre: 'Felipa',
-      apellido: 'González',
-      email: 'felipa@gmail.com',
-      createAt: '2024-12-18'
-    },
+  constructor(private clienteService: ClienteService) {
+  }
 
-  ];
+  clientes: Cliente[];
 
   titulo: string = 'Listado de clientes!';
 
+  ngOnInit(): void {
+    this.clientes = this.clienteService.getClientes();
+  }
 }
