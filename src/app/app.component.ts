@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {DirectivaComponent} from './directiva/directiva.component';
-import {ClientesComponent} from './clientes/clientes.component';
+import {ClientesComponent} from './components/clientes/clientes.component';
 
 @Component({
   selector: 'app-root',

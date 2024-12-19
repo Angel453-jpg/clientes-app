@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Cliente} from '../models/cliente';
+import {Cliente} from '../../models/cliente';
 import {NgForOf} from '@angular/common';
-import {ClienteService} from '../services/cliente.service';
+import {ClienteService} from '../../services/cliente.service';
 
 @Component({
   selector: 'app-clientes',
@@ -21,6 +21,8 @@ export class ClientesComponent implements OnInit {
   titulo: string = 'Listado de clientes!';
 
   ngOnInit(): void {
-    this.clientes = this.clienteService.getClientes();
+    this.clienteService.getClientes().subscribe(
+      clientes => this.clientes = clientes
+    );
   }
 }
