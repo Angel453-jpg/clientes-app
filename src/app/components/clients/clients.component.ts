@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Client} from '../../models/client';
 import {NgForOf} from '@angular/common';
 import {ClienteService} from '../../services/cliente.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -15,10 +16,10 @@ import {RouterLink} from '@angular/router';
 })
 export class ClientsComponent implements OnInit {
 
-  constructor(private clienteService: ClienteService) {
+  constructor(private clienteService: ClienteService, private router: Router) {
   }
 
-  clientes: Client[];
+  clientes: Client[] = [];
 
   titulo: string = 'Listado de clientes!';
 
@@ -27,4 +28,37 @@ export class ClientsComponent implements OnInit {
       clientes => this.clientes = clientes
     );
   }
+
+  delete(cliente: Client): void {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: `Seguro que desea eliminar al cliente ${cliente.name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+      cancelButtonText: "No, cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.clienteService.delete(cliente.id).subscribe(
+          () => {
+            this.clientes = this.clientes.filter(client => client.id != client.id);
+            this.router.navigate(['/clientes/form'], {skipLocationChange: true}).then(
+              () => {
+                this.router.navigate(['/clientes'], {state: {cliente: this.clientes}})
+              }
+            );
+            Swal.fire({
+              title: "Cliente Eliminado!",
+              text: `Cliente ${cliente.name} eliminado con éxito`,
+              icon: "success"
+            });
+          }
+        )
+      }
+    });
+  }
+
 }

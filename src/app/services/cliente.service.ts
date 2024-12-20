@@ -31,4 +31,8 @@ export class ClienteService {
     return this.http.put<Client>(`${this.urlEndpoint}/${cliente.id}`, cliente);
   }
 
+  delete(id: number): Observable<Client> {
+    return this.http.delete<Client>(`${this.urlEndpoint}/${id}`);
+  }
+
 }
