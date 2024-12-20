@@ -27,4 +27,8 @@ export class ClienteService {
     return this.http.get<Client>(`${this.urlEndpoint}/${id}`);
   }
 
+  update(cliente: Client): Observable<Client> {
+    return this.http.put<Client>(`${this.urlEndpoint}/${cliente.id}`, cliente);
+  }
+
 }

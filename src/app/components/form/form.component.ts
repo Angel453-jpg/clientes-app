@@ -4,12 +4,14 @@ import {Client} from '../../models/client';
 import {ClienteService} from '../../services/cliente.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-form',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './form.component.html'
 })
@@ -37,17 +39,32 @@ export class FormComponent implements OnInit {
     })
   }
 
-  create(): void {
-    this.clienteService.create(this.client).subscribe(
-      cliente => {
-        this.router.navigate(['/clientes'])
-        Swal.fire(
-          'Nuevo Cliente',
-          `Cliente ${cliente.name} creado con éxito`,
-          'success'
-        );
-      }
-    )
+  onSubmit(): void {
+
+    if (this.client.id > 0) {
+      this.clienteService.update(this.client).subscribe(
+        cliente => {
+          this.router.navigate(['/clientes'])
+          Swal.fire(
+            'Cliente Actualizado',
+            `Cliente ${cliente.name} actualizado con éxito`,
+            'success'
+          );
+        }
+      )
+    } else {
+      this.clienteService.create(this.client).subscribe(
+        cliente => {
+          this.router.navigate(['/clientes'])
+          Swal.fire(
+            'Nuevo Cliente',
+            `Cliente ${cliente.name} creado con éxito`,
+            'success'
+          )
+        }
+      )
+    }
+
   }
 
 }

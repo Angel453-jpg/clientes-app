@@ -9,7 +9,7 @@
 
   <div class="card-body">
 
-    <form (ngSubmit)="create()">
+    <form (ngSubmit)="onSubmit()">
 
       <div>
         <input
@@ -46,8 +46,9 @@
           type="submit"
           class="btn btn-primary m-2"
         >
-          Create
+          {{ (client.id > 0) ? 'Update' : 'Create' }}
         </button>
+
       </div>
 
     </form>
