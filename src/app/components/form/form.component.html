@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="card-header">
+
+    <h5>
+      {{ titulo }}
+    </h5>
+
+  </div>
+
+  <div class="card-body">
+
+    <form (ngSubmit)="create()">
+
+      <div>
+        <input
+          placeholder="Name"
+          name="name"
+          [(ngModel)]="client.name"
+          class="form-control my-2"
+          #name="ngModel"
+        >
+      </div>
+
+      <div>
+        <input
+          placeholder="Last Name"
+          name="lastName"
+          [(ngModel)]="client.lastName"
+          class="form-control my-2"
+          #name="ngModel"
+        >
+      </div>
+
+      <div>
+        <input
+          placeholder="Email"
+          name="email"
+          [(ngModel)]="client.email"
+          class="form-control my-2"
+          #name="ngModel"
+        >
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="btn btn-primary m-2"
+        >
+          Create
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

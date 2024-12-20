@@ -18,4 +18,9 @@ export class ClienteService {
       map(response => response as Client[])
     );
   }
+
+  create(client: Client): Observable<Client> {
+    return this.http.post<Client>(this.urlEndpoint, client);
+  }
+
 }
