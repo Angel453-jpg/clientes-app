@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {Client} from '../../models/client';
 import {ClienteService} from '../../services/cliente.service';
 import {Router} from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form',
@@ -23,7 +24,14 @@ export class FormComponent {
 
   create(): void {
     this.clienteService.create(this.client).subscribe(
-      () => this.router.navigate(['/clientes'])
+      cliente => {
+        this.router.navigate(['/clientes'])
+        Swal.fire(
+          'Nuevo Cliente',
+          `Cliente ${cliente.name} creado con éxito`,
+          'success'
+        );
+      }
     )
   }
 

@@ -1,5 +1,5 @@
 export class Client {
-  id: number;
+  id!: number;
   name: string = '';
   lastName: string = '';
   createAt: string = '';
