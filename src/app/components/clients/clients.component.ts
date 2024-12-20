@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Cliente} from '../../models/cliente';
+import {Client} from '../../models/client';
 import {NgForOf} from '@angular/common';
 import {ClienteService} from '../../services/cliente.service';
 
@@ -9,14 +9,14 @@ import {ClienteService} from '../../services/cliente.service';
   imports: [
     NgForOf
   ],
-  templateUrl: './clientes.component.html'
+  templateUrl: './clients.component.html'
 })
-export class ClientesComponent implements OnInit {
+export class ClientsComponent implements OnInit {
 
   constructor(private clienteService: ClienteService) {
   }
 
-  clientes: Cliente[];
+  clientes: Client[];
 
   titulo: string = 'Listado de clientes!';
 
