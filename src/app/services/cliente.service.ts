@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Client} from '../models/client';
-import {map, Observable} from 'rxjs';
+import {catchError, map, Observable, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class ClienteService {
 
   private urlEndpoint: string = 'http://localhost:8080/api/clients';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getClientes(): Observable<Client[]> {
@@ -24,7 +26,18 @@ export class ClienteService {
   }
 
   getClient(id: number): Observable<Client> {
-    return this.http.get<Client>(`${this.urlEndpoint}/${id}`);
+    return this.http.get<Client>(`${this.urlEndpoint}/${id}`).pipe(
+      catchError(e => {
+        console.error(e.error.mensaje);
+        this.router.navigate(['/clientes']);
+        Swal.fire(
+          'Error al editar',
+          e.error.mensaje,
+          'error'
+        );
+        return throwError(() => e);
+      })
+    );
   }
 
   update(cliente: Client): Observable<Client> {
