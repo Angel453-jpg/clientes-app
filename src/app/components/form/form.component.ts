@@ -4,14 +4,15 @@ import {Client} from '../../models/client';
 import {ClienteService} from '../../services/cliente.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
-import {NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-form',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './form.component.html'
 })
@@ -19,6 +20,7 @@ export class FormComponent implements OnInit {
 
   client: Client;
   titulo: string = 'Crear Cliente';
+  errores: string[] = [];
 
   constructor(private clienteService: ClienteService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.client = new Client();
@@ -42,29 +44,39 @@ export class FormComponent implements OnInit {
   onSubmit(): void {
 
     if (this.client.id > 0) {
-      this.clienteService.update(this.client).subscribe(
-        cliente => {
-          this.router.navigate(['/clientes'])
-          Swal.fire(
-            'Cliente Actualizado',
-            `Cliente ${cliente.name} actualizado con éxito`,
-            'success'
-          );
+      this.clienteService.update(this.client).subscribe({
+        next:
+          cliente => {
+            this.router.navigate(['/clientes'])
+            Swal.fire(
+              'Cliente Actualizado',
+              `El cliente ${cliente.name} fue actualizado correctamente!`,
+              'success'
+            );
+          },
+        error: (err) => {
+          this.errores = err.error.errors as string[];
+          console.error('Código del error desde el backend: ' + err.status);
+          console.error(err.error.errors);
         }
-      )
+      })
     } else {
-      this.clienteService.create(this.client).subscribe(
-        cliente => {
-          this.router.navigate(['/clientes'])
-          Swal.fire(
-            'Nuevo Cliente',
-            `Cliente ${cliente.name} creado con éxito`,
-            'success'
-          )
+      this.clienteService.create(this.client).subscribe({
+        next:
+          cliente => {
+            this.router.navigate(['/clientes'])
+            Swal.fire(
+              'Nuevo Cliente',
+              `El cliente ${cliente.name} ha sido creado con éxito`,
+              'success'
+            )
+          },
+        error: (err) => {
+          this.errores = err.error.errors as string[];
+          console.error('Código del error desde el backend: ' + err.status);
+          console.error(err.error.errors);
         }
-      )
+      })
     }
-
   }
-
 }

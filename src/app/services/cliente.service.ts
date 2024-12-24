@@ -21,10 +21,6 @@ export class ClienteService {
     );
   }
 
-  create(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.urlEndpoint, client);
-  }
-
   getClient(id: number): Observable<Client> {
     return this.http.get<Client>(`${this.urlEndpoint}/${id}`).pipe(
       catchError(e => {
@@ -40,12 +36,58 @@ export class ClienteService {
     );
   }
 
+  create(client: Client): Observable<Client> {
+    return this.http.post(this.urlEndpoint, client).pipe(
+      map((response: any) => response.cliente as Client),
+      catchError(e => {
+
+        if (e.status === 400) {
+          return throwError(() => e);
+        }
+
+        console.error(e.error.mensaje)
+        Swal.fire(
+          e.error.mensaje,
+          e.error.error,
+          'error'
+        );
+        return throwError(() => e);
+      })
+    );
+  }
+
   update(cliente: Client): Observable<Client> {
-    return this.http.put<Client>(`${this.urlEndpoint}/${cliente.id}`, cliente);
+    return this.http.put<Client>(`${this.urlEndpoint}/${cliente.id}`, cliente).pipe(
+      map((response: any) => response.cliente as Client),
+      catchError(e => {
+
+        if (e.status === 400) {
+          return throwError(() => e);
+        }
+
+        console.error(e.error.mensaje);
+        Swal.fire(
+          e.error.mensaje,
+          e.error.error,
+          'error'
+        );
+        return throwError(() => e);
+      })
+    );
   }
 
   delete(id: number): Observable<Client> {
-    return this.http.delete<Client>(`${this.urlEndpoint}/${id}`);
+    return this.http.delete<Client>(`${this.urlEndpoint}/${id}`).pipe(
+      catchError(e => {
+        console.error(e.error.mensaje);
+        Swal.fire(
+          e.error.mensaje,
+          e.error.error,
+          'error'
+        );
+        return throwError(() => e);
+      })
+    );
   }
 
 }

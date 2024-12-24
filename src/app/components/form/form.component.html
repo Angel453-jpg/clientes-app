@@ -1,3 +1,11 @@
+@if (errores?.length > 0) {
+  <ul class="alert alert-danger">
+    @for (err of errores; track $index) {
+      <li>{{ err }}</li>
+    }
+  </ul>
+}
+
 <div class="card">
   <div class="card-header">
 
@@ -17,8 +25,8 @@
           name="name"
           [(ngModel)]="client.name"
           class="form-control my-2"
-          #name="ngModel"
         >
+
       </div>
 
       <div>
@@ -27,7 +35,6 @@
           name="lastName"
           [(ngModel)]="client.lastName"
           class="form-control my-2"
-          #name="ngModel"
         >
       </div>
 
@@ -37,8 +44,8 @@
           name="email"
           [(ngModel)]="client.email"
           class="form-control my-2"
-          #name="ngModel"
         >
+
       </div>
 
       <div>
