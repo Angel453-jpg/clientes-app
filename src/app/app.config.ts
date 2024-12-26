@@ -12,4 +12,5 @@ export const appConfig: ApplicationConfig = {
   }]
 };
 
+//SE AGREGA EL IDIOMA ESPAÑOL EN EL APP.CONFIG.TS
 registerLocaleData(localeEs, 'es');

@@ -17,6 +17,7 @@ export class ClienteService {
 
   getClientes(): Observable<Client[]> {
     return this.http.get(this.urlEndpoint).pipe(
+      //USAMOS EL OPERADOR TAP PARA REALIZAR ALGUNA TAREA, NOS PERMITE REALIZAR ALGO
       tap(response => {
         let clientes = response as Client[];
         console.log('ClienteService: tap 1');
@@ -37,6 +38,7 @@ export class ClienteService {
           });
         }
       ),
+      //USAMOS EL OPERADOR TAP PARA REALIZAR ALGUNA TAREA
       tap(response => {
         console.log('ClienteService: tap 2');
         response.forEach(cliente => {
