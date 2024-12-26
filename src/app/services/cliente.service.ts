@@ -15,33 +15,32 @@ export class ClienteService {
   constructor(private http: HttpClient, private router: Router) {
   }
 
-  getClientes(): Observable<Client[]> {
-    return this.http.get(this.urlEndpoint).pipe(
+  getClientes(page: number): Observable<any> {
+    return this.http.get(this.urlEndpoint + '/page/' + page).pipe(
       //USAMOS EL OPERADOR TAP PARA REALIZAR ALGUNA TAREA, NOS PERMITE REALIZAR ALGO
-      tap(response => {
-        let clientes = response as Client[];
+      tap((response: any) => {
         console.log('ClienteService: tap 1');
-        clientes.forEach(
+        (response.content as Client[]).forEach(
           cliente => {
             console.log(cliente.name);
           }
         )
       }),
-      map(response => {
-          let clientes = response as Client[];
-          return clientes.map(cliente => {
+      map((response: any) => {
+          (response.content as Client[]).map(cliente => {
             cliente.name = cliente.name.toUpperCase();
             // let datePipe = new DatePipe('es');
             // cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMM, yyyy');
             // cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US');
             return cliente;
           });
+          return response;
         }
       ),
       //USAMOS EL OPERADOR TAP PARA REALIZAR ALGUNA TAREA
       tap(response => {
         console.log('ClienteService: tap 2');
-        response.forEach(cliente => {
+        (response.content as Client[]).forEach(cliente => {
           console.log(cliente.name);
         })
       })
