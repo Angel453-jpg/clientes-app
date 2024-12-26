@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Client} from '../../models/client';
 import {DatePipe, NgForOf, UpperCasePipe} from '@angular/common';
 import {ClienteService} from '../../services/cliente.service';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import Swal from 'sweetalert2';
 import {tap} from 'rxjs';
+import {PaginatorComponent} from '../paginator/paginator.component';
 
 
 @Component({
@@ -14,29 +15,43 @@ import {tap} from 'rxjs';
     NgForOf,
     RouterLink,
     UpperCasePipe,
-    DatePipe
+    DatePipe,
+    PaginatorComponent
   ],
   templateUrl: './clients.component.html'
 })
 export class ClientsComponent implements OnInit {
 
-  constructor(private clienteService: ClienteService, private router: Router) {
+  constructor(private clienteService: ClienteService, private router: Router, private activatedRouter: ActivatedRoute) {
   }
 
   clientes: Client[] = [];
 
   titulo: string = 'Listado de clientes!';
 
+  paginator: any = {};
+
   ngOnInit(): void {
-    this.clienteService.getClientes().pipe(
-      tap(clientes => {
-        console.log('ClientsComponent: tap 3');
-        clientes.forEach(cliente => {
-          console.log(cliente.name);
-        })
-      })
-    )
-      .subscribe(clientes => this.clientes = clientes);
+    this.activatedRouter.paramMap.subscribe(
+      params => {
+        let page: number = +params.get('page');
+
+        if (!page) {
+          page = 0;
+        }
+
+        this.clienteService.getClientes(page).pipe(
+          tap(response => {
+            console.log('ClientsComponent: tap 3');
+            (response.content as Client[]).forEach(cliente => console.log(cliente.name));
+          })
+        )
+          .subscribe(response => {
+            this.clientes = response.content as Client[]
+            this.paginator = response;
+          });
+      }
+    );
   }
 
   delete(cliente: Client): void {
