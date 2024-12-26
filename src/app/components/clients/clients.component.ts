@@ -1,16 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {Client} from '../../models/client';
-import {NgForOf} from '@angular/common';
+import {DatePipe, NgForOf, UpperCasePipe} from '@angular/common';
 import {ClienteService} from '../../services/cliente.service';
 import {Router, RouterLink} from '@angular/router';
 import Swal from 'sweetalert2';
+import {tap} from 'rxjs';
+
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
   imports: [
     NgForOf,
-    RouterLink
+    RouterLink,
+    UpperCasePipe,
+    DatePipe
   ],
   templateUrl: './clients.component.html'
 })
@@ -24,9 +28,15 @@ export class ClientsComponent implements OnInit {
   titulo: string = 'Listado de clientes!';
 
   ngOnInit(): void {
-    this.clienteService.getClientes().subscribe(
-      clientes => this.clientes = clientes
-    );
+    this.clienteService.getClientes().pipe(
+      tap(clientes => {
+        console.log('ClientsComponent: tap 3');
+        clientes.forEach(cliente => {
+          console.log(cliente.name);
+        })
+      })
+    )
+      .subscribe(clientes => this.clientes = clientes);
   }
 
   delete(cliente: Client): void {

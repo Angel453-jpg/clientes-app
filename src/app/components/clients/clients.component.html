@@ -29,9 +29,9 @@
         <tr>
           <td>{{ cliente.id }}</td>
           <td>{{ cliente.name }}</td>
-          <td>{{ cliente.lastName }}</td>
+          <td>{{ cliente.lastName | uppercase }}</td>
           <td>{{ cliente.email }}</td>
-          <td>{{ cliente.createAt }}</td>
+          <td>{{ cliente.createAt | date:"EEEE dd, MMM, yyyy" }}</td>
           <td>
             <button
               class="btn btn-info btn-sm"
