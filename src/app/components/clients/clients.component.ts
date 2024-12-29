@@ -6,6 +6,8 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import Swal from 'sweetalert2';
 import {tap} from 'rxjs';
 import {PaginatorComponent} from '../paginator/paginator.component';
+import {DetailsComponent} from '../details/details.component';
+import {ModalService} from '../../services/modal.service';
 
 
 @Component({
@@ -16,20 +18,25 @@ import {PaginatorComponent} from '../paginator/paginator.component';
     RouterLink,
     UpperCasePipe,
     DatePipe,
-    PaginatorComponent
+    PaginatorComponent,
+    DetailsComponent
   ],
   templateUrl: './clients.component.html'
 })
 export class ClientsComponent implements OnInit {
-
-  constructor(private clienteService: ClienteService, private router: Router, private activatedRouter: ActivatedRoute) {
-  }
 
   clientes: Client[] = [];
 
   titulo: string = 'Listado de clientes!';
 
   paginator: any = {};
+
+  clienteSeleccionado: Client;
+
+  constructor(private clienteService: ClienteService, private router: Router,
+              private activatedRouter: ActivatedRoute, private modalService: ModalService) {
+  }
+
 
   ngOnInit(): void {
     this.activatedRouter.paramMap.subscribe(
@@ -52,6 +59,16 @@ export class ClientsComponent implements OnInit {
           });
       }
     );
+
+    this.modalService.notificarUpload.subscribe(cliente => {
+      this.clientes = this.clientes.map(originalClient => {
+        if (cliente.id == originalClient.id) {
+          originalClient.foto = cliente.foto;
+        }
+        return originalClient;
+      })
+    })
+
   }
 
   delete(cliente: Client): void {
@@ -84,6 +101,11 @@ export class ClientsComponent implements OnInit {
         )
       }
     });
+  }
+
+  openModal(cliente: Client): void {
+    this.clienteSeleccionado = cliente;
+    this.modalService.openModal();
   }
 
 }
