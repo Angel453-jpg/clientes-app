@@ -59,6 +59,23 @@
       </div>
 
       <div>
+        <select
+          [compareWith]="compareRegion"
+          name="region"
+          [(ngModel)]="client.region"
+          class="form-select my-2"
+        >
+
+          <option [ngValue]="undefined">--- Seleccionar una region ---</option>
+
+          @for (region of regions; track $index) {
+            <option [ngValue]="region">{{ region.name }}</option>
+          }
+
+        </select>
+      </div>
+
+      <div>
         <button
           type="submit"
           class="btn btn-primary m-2"
